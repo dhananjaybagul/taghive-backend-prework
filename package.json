@@ -1,42 +1,42 @@
 {
-    "name": "taghive-backend-prework",
-    "version": "1.0.0",
-    "description": "Backend Developer Prework",
-    "main": "index.js",
-    "type": "module",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "nodemon index.js"
-    },
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/dhananjaybagul/taghive-backend-prework.git"
-    },
-    "author": "Dhananjay Bagul",
-    "license": "ISC",
-    "bugs": {
-      "url": "https://github.com/dhananjaybagul/taghive-backend-prework/issues"
-    },
-    "homepage": "https://github.com/dhananjaybagul/taghive-backend-prework#readme",
-    "dependencies": {
-      "cors": "^2.8.5",
-      "crypto-js": "^4.1.1",
-      "dotenv": "^16.0.3",
-      "express": "^4.18.2",
-      "jsonwebtoken": "^9.0.0",
-      "mongodb": "^5.1.0",
-      "mongoose": "^7.0.0",
-      "nodemon": "^2.0.20",
-      "pdfkit": "^0.13.0",
-      "typescript": "^4.9.5",
-      "winston": "^3.8.2"
-    },
-    "devDependencies": {
-      "@types/cors": "^2.8.13",
-      "@types/crypto-js": "^4.1.1",
-      "@types/express": "^4.17.17",
-      "@types/jsonwebtoken": "^9.0.2",
-      "@types/pdfkit": "^0.12.8"
-    }
+  "name": "taghive-backend-prework",
+  "version": "1.0.0",
+  "description": "Backend Developer Prework",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhananjaybagul/taghive-backend-prework.git"
+  },
+  "author": "Dhananjay Bagul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dhananjaybagul/taghive-backend-prework/issues"
+  },
+  "homepage": "https://github.com/dhananjaybagul/taghive-backend-prework#readme",
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongodb": "^5.1.0",
+    "mongoose": "^7.0.0",
+    "nodemon": "^2.0.20",
+    "pdfkit": "^0.13.0",
+    "typescript": "^4.9.5",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/crypto-js": "^4.1.1",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/pdfkit": "^0.12.8"
   }
-  
+}
