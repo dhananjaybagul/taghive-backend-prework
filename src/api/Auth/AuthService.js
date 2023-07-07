@@ -1,8 +1,8 @@
 import logger from "../../logger/logger.js";
 import { emailRegexValue, passwordregexValue } from "../../resource/constants.js";
-import { createUser, findUser, savePassword, saveToken } from "../User/UserService.js";
+import { createUser, findUser, generatePassword, savePassword, saveToken } from "../User/UserService.js";
 import cryptojs from 'crypto-js'
-import {sendRegistrationEmail} from '../Email/EmailService.js'
+import {sendChangedPasswordEmail, sendRegistrationEmail} from '../Email/EmailService.js'
 import jwt from 'jsonwebtoken';
 import { roles } from "../User/UserModel.js";
 
@@ -143,5 +143,20 @@ export const passwordReset = async (email, oldpassword, newpassword, confirmpass
     catch (e) {
         logger.error("Error in passwordReset catch : ", e.message);
         throw new Error(e.message);
+    }
+}
+
+export const passwordForgot = async (email) => {
+    try {
+        let pass = await generatePassword();
+        logger.info("Randomly Generated Password : ", pass);
+        let newPassword = cryptojs.AES.encrypt(pass, process.env.ENCRYPTION_KEY).toString();
+        await savePassword(email, newPassword);
+        await sendChangedPasswordEmail(email, pass);
+        return ('We Have Mailed You The Newly Generated Password, Please Check.')
+    }
+    catch (e) {
+        logger.error("Error in passwordForgot catch : ", e);
+        throw new Error('Failed To Create New Password , Please Try Again.')
     }
 }

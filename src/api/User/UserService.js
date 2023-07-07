@@ -1,3 +1,4 @@
+import { generatePasswordValue } from '../../resource/constants.js';
 import User from './UserModel.js';
 
 export const findUser = async (email) => {
@@ -45,5 +46,21 @@ export const savePassword = async (email, newPassword) => {
     catch (e) {
         console.log("Error in savePassword : ", e);
         throw (e);
+    }
+}
+
+export const generatePassword = async () => {
+    try {
+        let length = 10,
+            charSet = generatePasswordValue,
+            newPassword = "";
+        for (let i = 0, n = charSet.length; i < length; ++i) {
+            newPassword += charSet.charAt(Math.floor(Math.random() * n));
+        }
+        return newPassword;
+    }
+    catch (e) {
+        logger.error("Error in generatePassword catch : ", e.message);
+        throw new Error(e.message);
     }
 }
