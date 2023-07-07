@@ -1,6 +1,6 @@
 import logger from "../../logger/logger.js";
 import { emailRegexValue, passwordregexValue } from "../../resource/constants.js";
-import { createUser, findUser, saveToken } from "../User/UserService.js";
+import { createUser, findUser, savePassword, saveToken } from "../User/UserService.js";
 import cryptojs from 'crypto-js'
 import {sendRegistrationEmail} from '../Email/EmailService.js'
 import jwt from 'jsonwebtoken';
@@ -90,5 +90,58 @@ export const loginUser = async (email, password) => {
     catch (e) {
         logger.error("Error in login catch :", e);
         throw (e);
+    }
+}
+
+export const passwordReset = async (email, oldpassword, newpassword, confirmpassword) => {
+    try {
+        let user = await findUser(email);
+        logger.info("user", user);
+        if (!user) {
+            throw new Error("User Not Found");
+        }
+        logger.info("oldpassword :", oldpassword, "newpassword :", newpassword);
+        logger.info("user.password :", user.password);
+
+        let dbUserPassword = cryptojs.AES.decrypt(user.password, process.env.ENCRYPTION_KEY);
+        let decryptedUserPass = dbUserPassword.toString(cryptojs.enc.Utf8);
+        logger.info("decryptedUserPass :", decryptedUserPass);
+
+        let passcompare = (decryptedUserPass === oldpassword);
+        logger.info("comparedPass :", passcompare);
+
+        if (!passcompare) {
+            throw new Error("Old password doesn't match")
+        }
+
+        if (oldpassword === newpassword) {
+            throw new Error("Please enter another password")
+        }
+
+        if (newpassword !== confirmpassword) {
+            throw new Error("New password and Confirm password doesn't match ,please enter same password")
+        }
+
+        if (!(newpassword.length > 5) && !(confirmpassword.length > 5)) {
+            throw new Error("Password length must be greater than 5");
+        }
+
+        let paswd = passwordregexValue;
+        if (!newpassword.match(paswd)) {
+            throw new Error("Your password must contain at least one uppercase, one numeric digit and a special character")
+        }
+
+        logger.info("user before password reset:", user);
+        let userPassword = cryptojs.AES.encrypt(newpassword, process.env.ENCRYPTION_KEY).toString();
+        logger.info("userPassword :", userPassword);
+
+        let updatedUser = await savePassword(email, userPassword);
+        logger.info("new password :", newpassword);
+        logger.info("user after password reset:", updatedUser);
+        return ("Password changed successfully!")
+    }
+    catch (e) {
+        logger.error("Error in passwordReset catch : ", e.message);
+        throw new Error(e.message);
     }
 }

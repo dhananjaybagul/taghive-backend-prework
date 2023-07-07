@@ -1,5 +1,5 @@
 import logger from "../../logger/logger.js";
-import { isEmailValid, loginUser, registerUserData } from "./AuthService.js";
+import { isEmailValid, loginUser, passwordReset, registerUserData } from "./AuthService.js";
 
 export const test = (req, res) => {
     try {
@@ -53,5 +53,23 @@ export const userLogin = async (req, res) => {
     catch (e) {
         logger.error("Error in userLogin controller : ", e.message);
         throw new Error("Error in userLogin controller : ", e.message);
+    }
+}
+
+export const resetUserPassword = async (req, res) => {
+    try {
+        const { email, oldpassword, newpassword, confirmpassword } = req.body;
+        logger.info("req.body :", { email, oldpassword, newpassword, confirmpassword });
+        await passwordReset(email, oldpassword, newpassword, confirmpassword).then((response) => {
+            logger.info("passwordReset function : response", response);
+            res.status(201).send({ "Status": "SUCCESS", "Response": (response) });
+        }).catch((err) => {
+            logger.error("resetUserPassword catch function :", { "Status": "FAILED", "Response": (err.message) });
+            res.status(400).send({ "Status": "FAILED", "Response": (err.message) });
+        })
+    }
+    catch (e) {
+        logger.error("Error in resetUserPassword controller : ", e.message);
+        throw new Error("Error in resetUserPassword controller : ", e.message);
     }
 }

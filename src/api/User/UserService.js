@@ -31,3 +31,19 @@ export const saveToken = async (email, jwtToken) => {
         throw new Error('Error in saveToken :', e)
     }
 }
+
+export const savePassword = async (email, newPassword) => {
+    try {
+        let user = await findUser(email);
+        if (!user) {
+            throw new Error(`No User Found in savePassword`)
+        }
+        user.password = newPassword;
+        console.log("Password Saved Successfully!");
+        return await user.save();
+    }
+    catch (e) {
+        console.log("Error in savePassword : ", e);
+        throw (e);
+    }
+}
