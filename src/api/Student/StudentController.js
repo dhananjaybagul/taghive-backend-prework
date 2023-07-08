@@ -1,4 +1,5 @@
 import logger from "../../logger/logger.js";
+import { sendCourseEnrollEmail } from "../Email/EmailService.js";
 import { enrollCourseData } from "./StudentService.js";
 
 
@@ -28,11 +29,17 @@ export const enrollInCourse = async (req, res) => {
       }
   
       await enrollCourseData(studentId, courseId)
-        .then((response) => {
+        .then(async (response) => {
+
+            const email = response.student.email;
+            const userName = response.student.userName;
+            const course = response.course.name;
+
+            await sendCourseEnrollEmail(email, userName, course);
+
           res.status(201).send({
             Status: "SUCCESS",
-            Message: "Successfully enrolled into course!",
-            Response: response,
+            Message: "Successfully enrolled into course!"
           });
         })
         .catch((err) => {

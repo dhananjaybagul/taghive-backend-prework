@@ -5,15 +5,15 @@ import logger from '../../logger/logger.js';
 
 sgMail.setApiKey(process.env.sendGrid_API_KEY)
 const sendgridUserEmail = process.env.SENDGRID_USER_EMAIL;
+const sendgridUserName = process.env.SENDGRID_USER_NAME;
 let contact = 'contact@dhananjay.com';
 
-export const sendRegistrationEmail = async (email, name) => {
-    console.log({email,name,sendgridUserEmail});
+export const sendRegistrationEmail = async (email,name) => {
         sgMail.send({
         to: email,
         from:{
             email :sendgridUserEmail,
-            name: name
+            name: sendgridUserName
         } ,
         subject: 'Registration',
         html:
@@ -35,7 +35,7 @@ export const sendChangedPasswordEmail = async (email, pass) => {
         to: email,
         from: {
             email: sendgridUserEmail,
-            name: 'Dhananjay'
+            name: sendgridUserName
         },
         subject: 'Password changed successfully!',
         html: `<p>We detected that you have changed your password . The new password is <span style="font-weight: bold; color: #3d4852;">${pass}</span> , 
@@ -45,6 +45,30 @@ export const sendChangedPasswordEmail = async (email, pass) => {
     })
         .catch((error) => {
             logger.error("Error in sendChangedPasswordEmail : ", error.message);
+            throw new Error(error);
+        })
+}
+
+export const sendCourseEnrollEmail = async (email, name, course) => {
+    sgMail.send({
+        to: email,
+        from: {
+            email: sendgridUserEmail,
+            name: sendgridUserName
+        },
+        subject: 'New course enrollment',
+        html:
+        '<div style="font-size: 16px;">' +
+        '<h4 style="color: #3d4852;"><b>Hello ' +
+        name +
+        '</b></h4> <br /> <p> You are successfully enrolled into ' + 
+        course + 
+        ' course.</p><br /><h4 style="color: #3d4852;"><b>Keep learning !!!</b></h4></div>',
+    }).then(() => {
+        logger.info('Email Sent Successfully!')
+    })
+        .catch((error) => {
+            logger.error("Error in sendCourseEnrollEmail : ", error.message);
             throw new Error(error);
         })
 }

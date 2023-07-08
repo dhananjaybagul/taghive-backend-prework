@@ -50,3 +50,19 @@ export const generatePassword = async () => {
         throw new Error(e.message);
     }
 }
+
+export const getUserData = async (userId) => {
+    try {
+      const user = await User.findById({ _id: userId }).catch(() => {
+        throw new Error("User with given id does not exist");
+      });
+  
+      if (!user) {
+        throw new Error("No user found");
+      }
+  
+      return user;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
