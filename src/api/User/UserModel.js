@@ -22,13 +22,10 @@ const userSchema = new mongoose.Schema({
         enum: roles,
         default: "Student",
         required: true,
-      },
-    token: {
-        type: String,
-    }
+      }
 },
     {
-        timestamp: true
+        timestamps: true
     })
 
 const User = mongoose.model('User', userSchema)

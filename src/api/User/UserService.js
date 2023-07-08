@@ -19,20 +19,6 @@ export const createUser = async (userName, email, userPassword, role) => {
     })
 }
 
-export const saveToken = async (email, jwtToken) => {
-    try {
-        let user = await findUser(email);
-        if (!user) {
-            throw new Error('User Not Found To Update Token')
-        }
-        user.token = jwtToken;
-        return await user.save();
-    }
-    catch (e) {
-        throw new Error('Error in saveToken :', e)
-    }
-}
-
 export const savePassword = async (email, newPassword) => {
     try {
         let user = await findUser(email);

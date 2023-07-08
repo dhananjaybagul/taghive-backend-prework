@@ -1,6 +1,6 @@
 import logger from "../../logger/logger.js";
 import { emailRegexValue, passwordregexValue } from "../../resource/constants.js";
-import { createUser, findUser, generatePassword, savePassword, saveToken } from "../User/UserService.js";
+import { createUser, findUser, generatePassword, savePassword } from "../User/UserService.js";
 import cryptojs from 'crypto-js'
 import {sendChangedPasswordEmail, sendRegistrationEmail} from '../Email/EmailService.js'
 import { roles } from "../User/UserModel.js";
@@ -81,11 +81,13 @@ export const loginUser = async (email, password) => {
             throw new Error("you have Entered Invalid Email or Password , Please Try Again.")
         }
 
-        // let jwtToken = jwt.sign({ email: email }, process.env.JWT_SECRET, { expiresIn: "2d" });
-        let jwtToken = generateToken({ email: email }, '2d');
-        let userData = await saveToken(email, jwtToken);
-        logger.info("User after saving token : ", userData);
-        let message = `Welcome ${userData.userName}`;
+        const payload = {
+            email,
+            id: user._id.toString(),
+            role: user.role
+        };
+        let jwtToken = generateToken(payload, '2d');
+        let message = `Welcome ${user.userName}`;
         return { message, jwtToken }
     }
     catch (e) {

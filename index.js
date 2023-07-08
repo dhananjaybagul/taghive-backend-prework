@@ -4,6 +4,7 @@ import logger from "./src/logger/logger.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from './src/api/Auth/AuthRoutes.js';
+import courseRoutes from './src/api/Course/CourseRoutes.js';
 
 import("./src/database/dbconfig.js");
 dotenv.config();
@@ -14,6 +15,7 @@ app.use(cors());
 app.options("*", cors());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/course", courseRoutes);
 
 app.use("*", function (req, res) {
   res.status(404).send("404");
