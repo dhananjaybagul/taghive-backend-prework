@@ -1,11 +1,13 @@
-require('dotenv').config;
+import dotenv from "dotenv";
 import Jwt from 'jsonwebtoken';
+
+dotenv.config();
 
 export const generateToken = (payload, expiry) => {
     const options = {
         expiresIn: expiry,
     };
-    const secret = 'JWT_SECRET';
+    const secret = process.env.JWT_SECRET;
     return (Jwt.sign(payload, secret, options));
 }
 
@@ -18,8 +20,9 @@ export const validateToken = (req, res, next) => {
             maxAge: '2d',
         };
         try {
+            const secret = process.env.JWT_SECRET;
             // verify makes sure that the token hasn't expired and has been issued by us
-            result = Jwt.verify(token, 'JWT_SECRET', options);
+            result = Jwt.verify(token, secret, options);
             // Let's pass back the decoded token to the request object
             req.decoded = result;
             // We call next to pass execution to the subsequent middleware
