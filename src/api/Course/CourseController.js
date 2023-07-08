@@ -132,19 +132,6 @@ export const deleteCourse = async (req, res) => {
 export const getCourse = async (req, res) => {
   try {
     const courseId = req.params.id;
-    const role = req.decoded.role;
-
-    if (role !== "Teacher") {
-      logger.error({
-        Status: "FAILED",
-        Response: "Only Teachers are allowed to fetch courses",
-      });
-      res.status(400).send({
-        Status: "FAILED",
-        Response: "Only Teachers are allowed to fetch courses",
-      });
-      return;
-    }
 
     await getCourseData(courseId)
       .then((response) => {
@@ -167,19 +154,6 @@ export const getCourse = async (req, res) => {
 export const getAllCourses = async (req, res) => {
   try {
     const courseId = req.params.id;
-    const role = req.decoded.role;
-
-    if (role !== "Teacher") {
-      logger.error({
-        Status: "FAILED",
-        Response: "Only Teachers are allowed to fetch courses",
-      });
-      res.status(400).send({
-        Status: "FAILED",
-        Response: "Only Teachers are allowed to fetch courses",
-      });
-      return;
-    }
 
     await getAllCoursesData(courseId)
       .then((response) => {
