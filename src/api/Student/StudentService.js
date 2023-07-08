@@ -24,8 +24,8 @@ export const enrollCourseData = async (
       courseId,
       progress,
     });
-    const progressRecord = await progressData.save();
-    return { course, progressRecord, student };
+    await progressData.save();
+    return { course, student };
   } catch (error) {
     throw new Error(error.message);
   }
