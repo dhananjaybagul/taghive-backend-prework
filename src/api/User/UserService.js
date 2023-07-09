@@ -58,10 +58,26 @@ export const getUserData = async (userId) => {
       });
   
       if (!user) {
-        throw new Error("No user found");
+        throw new Error("User not found");
       }
   
       return user;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  export const getStudentData = async () => {
+    try {
+      const students = await User.find({ role: 'Student' }).catch(() => {
+        throw new Error("Something went wrong while fetching student data");
+      });
+  
+      if (!students) {
+        throw new Error("Students not found");
+      }
+  
+      return students;
     } catch (error) {
       throw new Error(error);
     }

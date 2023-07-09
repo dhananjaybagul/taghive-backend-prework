@@ -13,3 +13,26 @@ export const formatStudentData = (data) => {
         courses: courses,
     }
 }
+
+export const formatAllStudentData = (students, progress) =>{
+    const result = [];
+
+    students.map((student) => {
+        const studentData = {
+            name: student.userName,
+            email: student.email,
+            courses: []
+        };
+        progress.map((pro) => {
+            if(student?._id?.toString() == pro?.studentId?._id){
+                studentData.courses.push({
+                    name: pro?.courseId?.name,
+                    progress: pro?.progress
+                })
+            }
+        });
+        result.push(studentData);
+    });
+
+    return result;
+}
