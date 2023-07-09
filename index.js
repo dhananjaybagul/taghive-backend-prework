@@ -5,7 +5,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from './src/api/Auth/AuthRoutes.js';
 import courseRoutes from './src/api/Course/CourseRoutes.js';
-import studentRoutes from './src/api/Student/StudentRoutes.js'
+import studentRoutes from './src/api/Student/StudentRoutes.js';
+import teacherRoutes from './src/api/Teacher/TeacherRoutes.js';
 
 import("./src/database/dbconfig.js");
 dotenv.config();
@@ -18,6 +19,7 @@ app.options("*", cors());
 app.use("/api/auth", authRoutes);
 app.use("/api/course", courseRoutes);
 app.use("/api/student", studentRoutes);
+app.use("/api/teacher", teacherRoutes);
 
 app.use("*", function (req, res) {
   res.status(404).send("404");

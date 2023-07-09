@@ -4,11 +4,13 @@ export const progressStatus = ["Enrolled", "Started", "On-going", "Completed"]
 
 const progressSchema = new mongoose.Schema({
     studentId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         require: true
     },
     courseId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course',
         require: true
     },
     progress: {

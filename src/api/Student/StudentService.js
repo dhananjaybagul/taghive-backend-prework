@@ -13,10 +13,10 @@ export const enrollCourseData = async (
     const student = await getUserData(studentId);
 
     //to check if student is already entolled into course
-    const progressCheck = await Progress.find({studentId, courseId});
+    const progressCheck = await Progress.find({ studentId, courseId });
 
-    if(progressCheck.length){
-        throw new Error("Student is already enrolled into course");
+    if (progressCheck.length) {
+      throw new Error("Student is already enrolled into course");
     }
 
     const progressData = await Progress.create({

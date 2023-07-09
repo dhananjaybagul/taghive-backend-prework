@@ -6,7 +6,8 @@ const courseSchema = new mongoose.Schema({
         require: true
     },
     teacherId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         require: true
     }
 },
