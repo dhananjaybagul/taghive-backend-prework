@@ -3,7 +3,7 @@ dotenv.config();
 import sgMail from "@sendgrid/mail";
 import logger from "../../logger/logger.js";
 
-sgMail.setApiKey(process.env.sendGrid_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const sendgridUserEmail = process.env.SENDGRID_USER_EMAIL;
 const sendgridUserName = process.env.SENDGRID_USER_NAME;
 const contact = "contact@dhananjay.com";

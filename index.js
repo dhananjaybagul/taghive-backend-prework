@@ -25,7 +25,7 @@ app.use("*", function (req, res) {
   res.status(404).send("404");
 });
 
-let port = process.env.port || 3000;
+let port = process.env.PORT || 3000;
 
 app.listen(port, () => {
   banner(logger);
