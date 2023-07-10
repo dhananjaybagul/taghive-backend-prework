@@ -16,7 +16,7 @@ export const registerUser = async (req, res) => {
     try {
         const { userName, email, password, role } = req.body;
 
-        let isValidEmail = await isEmailValid(email);
+        const isValidEmail = await isEmailValid(email);
 
         if (!isValidEmail) {
             logger.error({ "Status": "FAILED", "Response": "E-mail is Not valid, Please Enter Valid Email Id" });
@@ -79,7 +79,7 @@ export const forgotPassword = async (req, res) => {
     try {
         logger.info("req.body :", req.body.email);
         const email = req.body.email;
-        let isUser = await findUser(email);
+        const isUser = await findUser(email);
         logger.info("response from database :", isUser);
         if (!isUser) {
             res.status(400).send({ "Status": "FAILED", "Response": "User not found" })

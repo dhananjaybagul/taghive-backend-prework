@@ -6,7 +6,7 @@ import logger from "../../logger/logger.js";
 sgMail.setApiKey(process.env.sendGrid_API_KEY);
 const sendgridUserEmail = process.env.SENDGRID_USER_EMAIL;
 const sendgridUserName = process.env.SENDGRID_USER_NAME;
-let contact = "contact@dhananjay.com";
+const contact = "contact@dhananjay.com";
 
 export const sendRegistrationEmail = async (email, name) => {
   sgMail

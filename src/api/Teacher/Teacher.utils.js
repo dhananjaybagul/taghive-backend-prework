@@ -1,5 +1,5 @@
 export const formatStudentData = (data) => {
-    let courses = [];
+    const courses = [];
     data?.map((student) => {
         courses.push({
             name: student?.courseId?.name,

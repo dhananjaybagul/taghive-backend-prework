@@ -6,6 +6,18 @@ export const getOneStudent = async (req, res) => {
     const role = req.decoded.role;
     const studentId = req.params.studentId;
 
+    if (!studentId) {
+      logger.error({
+        Status: "FAILED",
+        Response: "Please provide a valid studentId",
+      });
+      res.status(400).send({
+        Status: "FAILED",
+        Response: "Please provide a valid studentId",
+      });
+      return;
+    }
+
     if (role !== "Teacher") {
       logger.error({
         Status: "FAILED",

@@ -42,7 +42,7 @@ export const createCourse = async (req, res) => {
       })
       .catch((err) => {
         logger.error("createCourse catch function :", err);
-        res.status(400).send({ Status: "FAILED", Response: err });
+        res.status(400).send({ Status: "FAILED", Response: err.message });
       });
   } catch (e) {
     logger.error("Error in createCourse controller : ", e);
@@ -57,11 +57,11 @@ export const updateCourse = async (req, res) => {
 
     const role = req.decoded.role;
 
-    if (!name) {
-      logger.error({ Status: "FAILED", Response: "Please enter a valid name" });
+    if (!name || !courseId) {
+      logger.error({ Status: "FAILED", Response: "Please enter a valid name or corse Id" });
       res
         .status(400)
-        .send({ Status: "FAILED", Response: "Please enter a valid name" });
+        .send({ Status: "FAILED", Response: "Please enter a valid name or corse Id" });
       return;
     }
     if (role !== "Teacher") {
@@ -99,6 +99,18 @@ export const deleteCourse = async (req, res) => {
     const courseId = req.params.id;
     const role = req.decoded.role;
 
+    if (!courseId) {
+      logger.error({
+        Status: "FAILED",
+        Response: "Please provide a valid courseId",
+      });
+      res.status(400).send({
+        Status: "FAILED",
+        Response: "Please provide a valid courseId",
+      });
+      return;
+    }
+
     if (role !== "Teacher") {
       logger.error({
         Status: "FAILED",
@@ -133,6 +145,18 @@ export const getCourse = async (req, res) => {
   try {
     const courseId = req.params.id;
 
+    if (!courseId) {
+      logger.error({
+        Status: "FAILED",
+        Response: "Please provide a valid courseId",
+      });
+      res.status(400).send({
+        Status: "FAILED",
+        Response: "Please provide a valid courseId",
+      });
+      return;
+    }
+
     await getCourseData(courseId)
       .then((response) => {
         res.status(201).send({
@@ -153,9 +177,8 @@ export const getCourse = async (req, res) => {
 
 export const getAllCourses = async (req, res) => {
   try {
-    const courseId = req.params.id;
-
-    await getAllCoursesData(courseId)
+    
+    await getAllCoursesData()
       .then((response) => {
         res.status(201).send({
           Status: "SUCCESS",

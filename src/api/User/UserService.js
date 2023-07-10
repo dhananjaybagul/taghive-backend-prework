@@ -1,5 +1,6 @@
 import { generatePasswordValue } from '../../resource/constants.js';
 import User from './UserModel.js';
+import logger from '../../logger/logger.js';
 
 export const findUser = async (email) => {
     return await User.findOne({ email: email })
@@ -13,7 +14,7 @@ export const createUser = async (userName, email, userPassword, role) => {
         role
     });
     return await user.save().then((data) => {
-        let userData = data.toObject();
+        const userData = data.toObject();
         delete (userData.password);
         return userData;
     })
@@ -21,7 +22,7 @@ export const createUser = async (userName, email, userPassword, role) => {
 
 export const savePassword = async (email, newPassword) => {
     try {
-        let user = await findUser(email);
+        const user = await findUser(email);
         if (!user) {
             throw new Error(`No User Found in savePassword`)
         }

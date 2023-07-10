@@ -2,9 +2,14 @@ import Course from "./CourseModel.js";
 
 export const createCourseData = async (name, teacherId) => {
   try {
-    const course = await Course.create({ name, teacherId });
-    return await course.save().then((data) => {
-      let courseData = data.toObject();
+
+    const course = await Course.findOne({ name });
+    if(course){
+      throw new Error("Course already exist");
+    }
+    const saveCourse = await Course.create({ name, teacherId });
+    return await saveCourse.save().then((data) => {
+      const courseData = data.toObject();
       return courseData;
     });
   } catch (error) {
@@ -62,7 +67,7 @@ export const getCourseData = async (courseId) => {
   }
 };
 
-export const getAllCoursesData = async (courseId) => {
+export const getAllCoursesData = async () => {
     try {
       const course = await Course.find();
   

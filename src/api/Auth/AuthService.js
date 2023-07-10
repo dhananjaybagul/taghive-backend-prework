@@ -7,19 +7,19 @@ import { roles } from "../User/UserModel.js";
 import { generateToken } from "../../resource/utils.js";
 
 export const isEmailValid = async (email) => {
-    let emailRegex = emailRegexValue;
+    const emailRegex = emailRegexValue;
     try {
         if (!email)
             return false;
         if (email.length > 254)
             return false;
-        let valid = emailRegex.test(email);
+        const valid = emailRegex.test(email);
         if (!valid)
             return false;
-        let parts = email.split("@");
+        const parts = email.split("@");
         if (parts[0].length > 64)
             return false;
-        let domainParts = parts[1].split(".");
+        const domainParts = parts[1].split(".");
         if (domainParts.some(function (part) { return part.length > 63; }))
             return false;
         return true;
@@ -41,18 +41,18 @@ export const registerUserData = async (userName, email, password, role) => {
         if (password.length < 5) {
             throw new Error("Password Length Must be Greater than 5")
         }
-        let paswd = passwordregexValue;
+        const paswd = passwordregexValue;
         if (!password.match(paswd)) {
             throw new Error("Your password must contain at least one uppercase, one numeric digit and a special character")
         }
-        let getUserFromDB = await findUser(email);
+        const getUserFromDB = await findUser(email);
         if (getUserFromDB) {
             throw new Error("User Already Exists! Please Login");
         }
-            let userPassword = cryptojs.AES.encrypt(password, process.env.ENCRYPTION_KEY).toString();
+            const userPassword = cryptojs.AES.encrypt(password, process.env.ENCRYPTION_KEY).toString();
             logger.info("user pass", userPassword);
             logger.info(cryptojs.AES.encrypt(password, process.env.ENCRYPTION_KEY).toString());
-            let userData = await createUser(userName, email.toLowerCase(), userPassword, role);
+            const userData = await createUser(userName, email.toLowerCase(), userPassword, role);
             logger.info("userData : ", userData);
             await sendRegistrationEmail(email, userName);
             return (userData);
@@ -65,16 +65,16 @@ export const registerUserData = async (userName, email, password, role) => {
 export const loginUser = async (email, password) => {
     try {
         logger.info("email :", email, "password : ", password);
-        let user = await findUser(email);
+        const user = await findUser(email);
         logger.info("response from db :", user);
         if (!user) {
             throw new Error("User Doesnt Exist , Please Register Yourself.")
         }
-        let userPassword = cryptojs.AES.decrypt(user.password, process.env.ENCRYPTION_KEY)
-        let decryptedUserPass = userPassword.toString(cryptojs.enc.Utf8);
+        const userPassword = cryptojs.AES.decrypt(user.password, process.env.ENCRYPTION_KEY)
+        const decryptedUserPass = userPassword.toString(cryptojs.enc.Utf8);
         logger.info("converted pass :", decryptedUserPass);
 
-        let comparedPass = (password === decryptedUserPass);
+        const comparedPass = (password === decryptedUserPass);
         logger.info("comparedPass :", comparedPass);
 
         if (!(user && comparedPass)) {
@@ -86,8 +86,8 @@ export const loginUser = async (email, password) => {
             id: user._id.toString(),
             role: user.role
         };
-        let jwtToken = generateToken(payload, '2d');
-        let message = `Welcome ${user.userName}`;
+        const jwtToken = generateToken(payload, '2d');
+        const message = `Welcome ${user.userName}`;
         return { message, jwtToken }
     }
     catch (e) {
@@ -98,7 +98,7 @@ export const loginUser = async (email, password) => {
 
 export const passwordReset = async (email, oldpassword, newpassword, confirmpassword) => {
     try {
-        let user = await findUser(email);
+        const user = await findUser(email);
         logger.info("user", user);
         if (!user) {
             throw new Error("User Not Found");
@@ -106,11 +106,11 @@ export const passwordReset = async (email, oldpassword, newpassword, confirmpass
         logger.info("oldpassword :", oldpassword, "newpassword :", newpassword);
         logger.info("user.password :", user.password);
 
-        let dbUserPassword = cryptojs.AES.decrypt(user.password, process.env.ENCRYPTION_KEY);
-        let decryptedUserPass = dbUserPassword.toString(cryptojs.enc.Utf8);
+        const dbUserPassword = cryptojs.AES.decrypt(user.password, process.env.ENCRYPTION_KEY);
+        const decryptedUserPass = dbUserPassword.toString(cryptojs.enc.Utf8);
         logger.info("decryptedUserPass :", decryptedUserPass);
 
-        let passcompare = (decryptedUserPass === oldpassword);
+        const passcompare = (decryptedUserPass === oldpassword);
         logger.info("comparedPass :", passcompare);
 
         if (!passcompare) {
@@ -129,16 +129,16 @@ export const passwordReset = async (email, oldpassword, newpassword, confirmpass
             throw new Error("Password length must be greater than 5");
         }
 
-        let paswd = passwordregexValue;
+        const paswd = passwordregexValue;
         if (!newpassword.match(paswd)) {
             throw new Error("Your password must contain at least one uppercase, one numeric digit and a special character")
         }
 
         logger.info("user before password reset:", user);
-        let userPassword = cryptojs.AES.encrypt(newpassword, process.env.ENCRYPTION_KEY).toString();
+        const userPassword = cryptojs.AES.encrypt(newpassword, process.env.ENCRYPTION_KEY).toString();
         logger.info("userPassword :", userPassword);
 
-        let updatedUser = await savePassword(email, userPassword);
+        const updatedUser = await savePassword(email, userPassword);
         logger.info("new password :", newpassword);
         logger.info("user after password reset:", updatedUser);
         return ("Password changed successfully!")
@@ -151,9 +151,9 @@ export const passwordReset = async (email, oldpassword, newpassword, confirmpass
 
 export const passwordForgot = async (email) => {
     try {
-        let pass = await generatePassword();
+        const pass = await generatePassword();
         logger.info("Randomly Generated Password : ", pass);
-        let newPassword = cryptojs.AES.encrypt(pass, process.env.ENCRYPTION_KEY).toString();
+        const newPassword = cryptojs.AES.encrypt(pass, process.env.ENCRYPTION_KEY).toString();
         await savePassword(email, newPassword);
         await sendChangedPasswordEmail(email, pass);
         return ('We Have Mailed You The Newly Generated Password, Please Check.')
