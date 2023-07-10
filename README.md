@@ -18,7 +18,7 @@ This is a Node JS project for taghive-backend-prework.
 
 ### 👉 General Steps
 
-- Create copy of `.env.example` file.
+- Create copy of `.env.example` file as `.env` file.
 
 - Assign appropriate values to variables. (Follow below Environment Configuration section for more details)
 
@@ -59,7 +59,7 @@ By default, the application comes with a config module that can read in every en
 ---
 
 
-### 📝 API Collection/ Open API
+### 📝 API Collection
 
 Below is the postman collection for this application. You can import this link into your postman collection and try with calling API's. \
 [Postman Collection](https://api.postman.com/collections/17072801-4f35b5e4-512d-4488-a513-57b7b3fa66ef?access_key=PMAT-01H4ZAEQ5R4H76AF4473ETVWH6)
